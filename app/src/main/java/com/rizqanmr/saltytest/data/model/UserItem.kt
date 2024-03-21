@@ -15,4 +15,8 @@ data class UserItem(
     val firstName: String = "",
     @SerialName("email")
     val email: String = ""
-)
+) {
+    fun getUserFullName(): String {
+        return "$firstName $lastName"
+    }
+}

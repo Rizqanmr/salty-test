@@ -66,7 +66,7 @@ fun UserItems(item: UserItem) {
             WidthSpacer(value = 10.dp)
             Column {
                 Text(
-                    text = item.firstName,
+                    text = item.getUserFullName(),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
