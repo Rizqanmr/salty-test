@@ -10,7 +10,7 @@ data class UserResult(
     @SerialName("total")
     val total: Int = 0,
     @SerialName("data")
-    val data: List<UserItem>?,
+    val data: List<UserItem>,
     @SerialName("page")
     val page: Int = 0,
     @SerialName("total_pages")
