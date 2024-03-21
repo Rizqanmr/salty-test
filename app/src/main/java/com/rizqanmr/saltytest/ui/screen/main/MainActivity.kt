@@ -1,4 +1,4 @@
-package com.rizqanmr.saltytest.ui.screen
+package com.rizqanmr.saltytest.ui.screen.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
