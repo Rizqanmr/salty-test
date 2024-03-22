@@ -29,7 +29,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.rizqanmr.saltytest.data.model.UserItem
 import com.rizqanmr.saltytest.ui.component.HeightSpacer
 import com.rizqanmr.saltytest.ui.component.RemoteImage
