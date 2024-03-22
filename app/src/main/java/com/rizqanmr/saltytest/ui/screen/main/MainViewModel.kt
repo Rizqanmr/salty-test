@@ -2,7 +2,14 @@ package com.rizqanmr.saltytest.ui.screen.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.rizqanmr.saltytest.data.UserPagingSource
+import com.rizqanmr.saltytest.data.model.UserItem
 import com.rizqanmr.saltytest.data.repository.RemoteRepositoryImpl
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -11,15 +18,28 @@ class MainViewModel(
 ) : ViewModel() {
 
     val mainState = MutableStateFlow<MainState>(MainState.StartState)
+    private val pagingConfig = PagingConfig(pageSize = 6)
+    private val pager = Pager(config = pagingConfig) {
+        UserPagingSource(remoteRepositoryImpl)
+    }
 
-    suspend fun getUsers() {
+    val listUser: Flow<PagingData<UserItem>> = getUsers()
+
+    init {
+        getUsers()
+    }
+
+    private fun getUsers() : Flow<PagingData<UserItem>> {
         viewModelScope.launch {
             mainState.tryEmit(MainState.LoadingState)
-            remoteRepositoryImpl.getUsers().onSuccess { userResult ->
-                mainState.emit(MainState.Success(userResult.data))
-            }.onFailure {
-                mainState.emit(MainState.Error(it.localizedMessage.orEmpty()))
+            try {
+                pager.flow.cachedIn(viewModelScope).collect {
+                    mainState.emit(MainState.Success(it))
+                }
+            } catch (e: Exception) {
+                mainState.emit(MainState.Error(e.localizedMessage!!))
             }
         }
+        return pager.flow.cachedIn(viewModelScope)
     }
 }

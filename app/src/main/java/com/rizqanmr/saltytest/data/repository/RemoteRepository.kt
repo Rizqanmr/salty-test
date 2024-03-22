@@ -6,7 +6,7 @@ import com.rizqanmr.saltytest.data.model.UserResult
 
 interface RemoteRepository {
 
-    suspend fun getUsers(): Result<UserResult>
+    suspend fun getUsers(page: Int): Result<UserResult>
 
     suspend fun login(credentials: Credentials): Result<LoginResponse>
 }

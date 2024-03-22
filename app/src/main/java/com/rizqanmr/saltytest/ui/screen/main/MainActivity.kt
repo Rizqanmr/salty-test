@@ -11,14 +11,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -29,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.rizqanmr.saltytest.data.model.UserItem
 import com.rizqanmr.saltytest.ui.component.HeightSpacer
 import com.rizqanmr.saltytest.ui.component.RemoteImage
@@ -43,11 +42,9 @@ class MainActivity : ComponentActivity() {
             SaltyTestTheme {
                 val viewModel: MainViewModel by viewModel()
                 val mainState by viewModel.mainState.collectAsState()
+                val listUsers = viewModel.listUser.collectAsLazyPagingItems()
                 val context = LocalContext.current
-                
-                LaunchedEffect(key1 = Unit, block = {
-                    viewModel.getUsers()
-                })
+
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -63,10 +60,10 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                         is MainState.Success -> {
-                            val users = (mainState as MainState.Success).users
                             LazyColumn(content = {
-                                items(users) {
-                                    UserItems(item = it)
+                                items(listUsers.itemCount) {index ->
+                                    val userItem = listUsers[index]
+                                    userItem?.let { UserItems(item = it) }
                                 }
                             })
                         }

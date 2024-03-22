@@ -11,11 +11,10 @@ class ApiService(private val client: HttpClient) {
     companion object {
         private const val BASE_URL = "https://reqres.in/api/"
         private const val USER = "users"
-        private const val PAGE = 1
         private const val LOGIN = "login"
     }
 
-    suspend fun getUsers() = client.get("$BASE_URL$USER?page=$PAGE")
+    suspend fun getUsers(page: Int) = client.get("$BASE_URL$USER?page=$page")
 
     suspend fun login(credentials: Credentials) = client.post("$BASE_URL$LOGIN") {
         setBody(credentials)

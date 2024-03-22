@@ -9,9 +9,9 @@ import io.ktor.client.call.body
 class RemoteRepositoryImpl(
     private val apiService: ApiService
 ) : RemoteRepository {
-    override suspend fun getUsers(): Result<UserResult> {
+    override suspend fun getUsers(page: Int): Result<UserResult> {
         return try {
-            Result.success(apiService.getUsers().body())
+            Result.success(apiService.getUsers(page).body())
         } catch (e: Exception) {
             Result.failure(e)
         }
